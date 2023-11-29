@@ -1,0 +1,56 @@
+﻿@page "/producto"
+@page "/producto/{id:int}"
+@inject ICProductos CProductos
+@inject NavigationManager NavigationManager
+
+<PageTitle>Producto</PageTitle>
+
+<h1>Registro de Productos</h1>
+<EditForm Model="@producto">
+    <table class="table">
+        <tr>
+            <td>Nombre: </td>
+            <td><input class="form-control col-sm-4" type="text" @bind="producto.Nombre" required="required" /></td>
+        </tr>
+        <tr>
+            <td>Descripción: </td>
+            <td><input class="form-control col-sm-4" type="text" @bind="producto.Descripcion" required="required" /></td>
+        </tr>
+        <tr>
+            <td>Cantidad: </td>
+            <td><input class="form-control col-sm-4" type="text" @bind="producto.Cantidadt" required="required" /></td>
+        </tr>
+        <tr>
+            <td>Precio Unitario: </td>
+            <td><input class="form-control col-sm-4" type="text" @bind="producto.PrecioUnitario" required="required" /></td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align:center">
+                <input type="submit" value="OK" @onclick="SaveProducto" />
+                <input type="button" value="Cancelar" @onclick="Cancelar" />
+            </td>
+        </tr>
+    </table>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int id { get; set; }
+    private Producto producto = new Producto();
+    protected override async Task OnInitializedAsync()
+    {
+        if (id != 0)
+        {
+            producto = await CProductos.GetProductoDetails(id);
+        }
+    }
+    protected async Task SaveProducto()
+    {
+        await CProductos.SaveProducto(producto);
+        NavigationManager.NavigateTo("/productos");
+    }
+    protected void Cancelar()
+    {
+        NavigationManager.NavigateTo("/productos");
+    }
+}

@@ -1,0 +1,68 @@
+﻿@page "/usuario"
+@page "/usuario/{id:int}"
+@inject ICUsuarios CUsuarios
+@inject NavigationManager NavigationManager
+
+<PageTitle>Usuario</PageTitle>
+
+<h1>Registro de Usuarios</h1>
+<EditForm Model="@usuario">
+    <table class="table">
+        <tr>
+            <td>Usuario:</td>
+            <td><input class="form-control col-sm-4" type="text" @bind="usuario.Usuario1" required="required" /></td>
+        </tr>
+        <tr>
+            <td>Correo:</td>
+            <td><input class="form-control col-sm-4" type="text" @bind="usuario.Correo" required="required" /></td>
+        </tr>
+        <tr>
+            <td>Contraseña:</td>
+            <td><input class="form-control col-sm-4" type="text" @bind="usuario.Clave" required="required" /></td>
+        </tr>
+        <tr>
+            <td>Rol: </td>
+            <td><input class="form-control col-sm-4" type="text" @bind="usuario.Trol" required="required" /></td>
+        </tr>
+        <tr>
+            <td>Nombre: </td>
+            <td><input class="form-control col-sm-4" type="text" @bind="usuario.Nombre" required="required" /></td>
+        </tr>
+        <tr>
+            <td>Apellido Paterno: </td>
+            <td><input class="form-control col-sm-4" type="text" @bind="usuario.ApellidoP" required="required" /></td>
+        </tr>
+        <tr>
+            <td>Apellido Materno: </td>
+            <td><input class="form-control col-sm-4" type="text" @bind="usuario.ApellidoM" required="required" /></td>
+        </tr>
+        <tr>
+            <td colspan="2" style="text-align:center">
+                <input type="submit" value="OK" @onclick="SaveUsuario" />
+                <input type="button" value="Cancelar" @onclick="Cancelar" />
+            </td>
+        </tr>
+    </table>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int id { get; set; }
+    private Usuario usuario = new Usuario();
+    protected override async Task OnInitializedAsync()
+    {
+        if (id != 0)
+        {
+            usuario = await CUsuarios.GetUsuarioDetails(id);
+        }
+    }
+    protected async Task SaveUsuario()
+    {
+        await CUsuarios.SaveUsuario(usuario);
+        NavigationManager.NavigateTo("/usuarios");
+    }
+    protected void Cancelar()
+    {
+        NavigationManager.NavigateTo("/usuarios");
+    }
+}

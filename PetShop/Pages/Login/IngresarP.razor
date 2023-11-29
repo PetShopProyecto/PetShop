@@ -1,0 +1,33 @@
+﻿@page "/ingresar"
+
+@inject IIngresar Ingresar
+@inject NavigationManager NavigationManager
+
+@layout LoginLayout
+
+<PageTitle>Ingresar</PageTitle>
+<body>
+<div class="center">
+    <h1>Bienvenido</h1>
+    <EditForm Model="@usuario">
+        <div class="inputbox">
+            <input type="text" required="required"/>
+            <span>Correo</span>
+        </div>
+        <div class="inputbox">
+            <input type="password" required="required"/>
+            <span>Contraseña</span>
+        </div>
+        <div class="inputbox">
+            <input type="button" value="submit">
+        </div>
+    </EditForm>
+</div>
+</body>
+
+
+@code {
+    [Parameter] public string ErrorMessage { get; set; }
+
+    private Usuario usuario = new Usuario();
+}
